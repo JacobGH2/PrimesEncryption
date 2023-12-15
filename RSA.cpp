@@ -11,8 +11,14 @@ int main() {
     // generate two primes -- right now they are hard-coded
     mpz_t p, q, n, car, e, d, m, c;
 
-    mpz_init_set_str(p, "61", 10);
-    mpz_init_set_str(q, "53", 10);
+    mpz_init_set_str(p, "31477", 10);
+    mpz_init_set_str(q, "58831", 10);
+
+    cout << "using primes: ";
+    mpz_out_str(NULL, 10, p);
+    cout << " ";
+    mpz_out_str(NULL, 10, q);
+    cout << endl;
 
     // compute n
     mpz_init(n);
@@ -39,11 +45,12 @@ int main() {
     } else {
         mpz_set(maxPrime, q);
     }
-    cout << "Max: ";
-    mpz_out_str(NULL, 10, maxPrime);
-    cout << endl;
+ 
     mpz_init(e);
     mpz_nextprime(e, maxPrime);
+    cout << "e: ";
+    mpz_out_str(NULL, 10, e);
+    cout << endl;
 
     // modular multiplicative inverse of e (mod car)
     mpz_init(d);
@@ -53,22 +60,24 @@ int main() {
     cout << endl;
 
     // enter message -- must be less than n
-    mpz_init_set_str(m, "3232", 10);
+    mpz_init_set_str(m, "397744444", 10);
 
     // encrypt message m, store resulting cyphertext in c
     mpz_init(c);
     mpz_powm(c, m, e, n);
-    cout << "c: ";
-    mpz_out_str(NULL, 10, c);
-    cout << endl;
 
     // decrypt c
     mpz_t result;
     mpz_init(result);
     mpz_powm(result, c, d, n);
-    cout << "result: ";
+
+    cout << "Message \"";
+    mpz_out_str(NULL, 10, m);
+    cout << "\" is encoded as \"";
+    mpz_out_str(NULL, 10, c);
+    cout << "\" then decrypted to \"";
     mpz_out_str(NULL, 10, result);
-    cout << endl;
+    cout << "\"" << endl;
 
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop-start);
